@@ -1,6 +1,6 @@
 module Nunjucks where
 
-import Prelude (($))
+import Prelude
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Exception (EXCEPTION)
 import Data.Foreign (Foreign)
@@ -121,6 +121,7 @@ defaultTagsConfiguration = TagsConfiguration
 defaultTagsConfiguration' :: (TagsConfigurationType -> TagsConfigurationType) -> TagsConfiguration
 defaultTagsConfiguration' f = over TagsConfiguration f defaultTagsConfiguration
 
-foreign import configureImpl :: forall eff. String -> Foreign -> Eff (exception :: EXCEPTION | eff) Nunjucks
-configure :: forall eff. String -> Configuration -> Eff (exception :: EXCEPTION | eff) Nunjucks
-configure path configuration = configureImpl path (encode configuration)
+-- Tell nunjucks to flip any feature on or off with the opts hash
+foreign import configureImpl :: forall eff. Foreign -> Eff (exception :: EXCEPTION | eff) Nunjucks
+configure :: forall eff. Configuration -> Eff (exception :: EXCEPTION | eff) Nunjucks
+configure = configureImpl <<< encode
