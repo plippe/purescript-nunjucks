@@ -8,6 +8,7 @@ Purescript wrapper for [nunjucks](https://mozilla.github.io/nunjucks/).
 
 ```sh
 bower install purescript-nunjucks
+npm install nunjucks # bower package doesn't work :(
 ```
 
 ## Documentation
