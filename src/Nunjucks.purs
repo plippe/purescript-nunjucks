@@ -120,3 +120,7 @@ defaultTagsConfiguration = TagsConfiguration
 
 defaultTagsConfiguration' :: (TagsConfigurationType -> TagsConfigurationType) -> TagsConfiguration
 defaultTagsConfiguration' f = over TagsConfiguration f defaultTagsConfiguration
+
+foreign import configureImpl :: forall eff. String -> Foreign -> Eff (exception :: EXCEPTION | eff) Nunjucks
+configure :: forall eff. String -> Configuration -> Eff (exception :: EXCEPTION | eff) Nunjucks
+configure path configuration = configureImpl path (encode configuration)
