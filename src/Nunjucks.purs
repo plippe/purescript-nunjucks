@@ -20,9 +20,11 @@ foreign import renderImpl :: forall eff. Foreign -> String -> String -> Foreign 
 render' :: forall eff c. Encode c => Nunjucks -> String -> String -> c -> Eff (exception :: EXCEPTION | eff) String
 render' (Nunjucks nunjucks) method str context = renderImpl nunjucks method str (encode context)
 
+-- Renders the template named name with the context hash. The result is returned from render and errors are thrown.
 render :: forall eff c. Encode c => Nunjucks -> String -> c -> Eff (exception :: EXCEPTION | eff) String
 render nunjucks = render' nunjucks "render"
 
+-- Same as render, but renders a raw string instead of loading a template.
 renderString :: forall eff c. Encode c => Nunjucks -> String -> c -> Eff (exception :: EXCEPTION | eff) String
 renderString nunjucks = render' nunjucks "renderString"
 

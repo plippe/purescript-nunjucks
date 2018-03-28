@@ -142,13 +142,13 @@ defaultTagsConfiguration' :: (TagsConfigurationType -> TagsConfigurationType) ->
 #### `configureImpl`
 
 ``` purescript
-configureImpl :: forall eff. String -> Foreign -> Eff (exception :: EXCEPTION | eff) Nunjucks
+configureImpl :: forall eff. Foreign -> Eff (exception :: EXCEPTION | eff) Nunjucks
 ```
 
 #### `configure`
 
 ``` purescript
-configure :: forall eff. String -> Configuration -> Eff (exception :: EXCEPTION | eff) Nunjucks
+configure :: forall eff. Configuration -> Eff (exception :: EXCEPTION | eff) Nunjucks
 ```
 
 
