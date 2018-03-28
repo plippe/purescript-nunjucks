@@ -34,7 +34,7 @@ testRenderNoFile = do
 
 testRender :: forall eff. Eff (exception :: EXCEPTION | eff) Unit
 testRender = do
-    output <- render default "/Users/pvinchon/Code/purescript-nunjucks/resources/index.nunjucks" (Context { username: "James" })
+    output <- render default "resources/index.nunjucks" (Context { username: "James" })
     if output == "Hello James\n"
         then pure unit
         else throw $ "Bad render output: " <> output
