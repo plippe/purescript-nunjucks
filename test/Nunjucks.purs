@@ -1,4 +1,4 @@
-module Test.Nunjucks.Render where
+module Test.Nunjucks where
 
 import Prelude
 import Control.Monad.Eff (Eff)
@@ -8,8 +8,7 @@ import Data.Foreign.Class (class Encode)
 import Data.Foreign.Generic (defaultOptions, genericEncode)
 import Data.Generic.Rep (class Generic)
 
-import Nunjucks (default)
-import Nunjucks.Render (render, renderString)
+import Nunjucks (default, render, renderString)
 
 newtype Context = Context { username :: String }
 derive instance repGenericContext :: Generic Context _
@@ -19,7 +18,7 @@ main :: forall eff. Eff (exception :: EXCEPTION | eff) Unit
 main = do
     _ <- testRenderNoFile
     _ <- testRender
-    -- _ <- testRenderString
+    _ <- testRenderString
 
     pure unit
 
