@@ -2,8 +2,8 @@
   "name": "purescript-nunjucks",
   "license": "MIT",
   "repository": {
-      "type": "git",
-      "url": "https://github.com/plippe/purescript-nunjucks.git"
+    "type": "git",
+    "url": "https://github.com/plippe/purescript-nunjucks.git"
   },
   "ignore": [
     "**/.*",
