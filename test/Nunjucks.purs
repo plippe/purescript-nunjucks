@@ -10,7 +10,7 @@ import Data.Foreign.NullOrUndefined (NullOrUndefined(..))
 import Data.Generic.Rep (class Generic)
 import Data.Maybe (Maybe(..))
 
-import Nunjucks (configure, default, defaultConfiguration, defaultConfiguration', render, renderString)
+import Nunjucks (configure, default, defaultConfiguration', render, renderString)
 
 newtype Context = Context { username :: String }
 derive instance repGenericContext :: Generic Context _
@@ -21,7 +21,6 @@ main = do
     _ <- testRenderNoFile
     _ <- testRender
     _ <- testRenderString
-    _ <- testConfigurePath
     _ <- testConfigureOptions
 
     pure unit
@@ -49,23 +48,15 @@ testRenderString = do
         then pure unit
         else throw $ "Bad renderString output: " <> output
 
-testConfigurePath :: forall eff. Eff (exception :: EXCEPTION | eff) Unit
-testConfigurePath = do
-    nunjucks <- configure "resources" defaultConfiguration
-    output <- render nunjucks "index.nunjucks" (Context { username: "James" })
-    if output == "Hello James\n"
-        then pure unit
-        else throw $ "Bad renderString output: " <> output
-
 testConfigureOptions :: forall eff. Eff (exception :: EXCEPTION | eff) Unit
 testConfigureOptions = do
     let string = "Hello {{ username }}"
     let context = Context { username: "\"James\"" }
 
-    safeNunjucks <- configure "" $ defaultConfiguration' $ _ { autoescape = NullOrUndefined (Just true) }
+    safeNunjucks <- configure $ defaultConfiguration' $ _ { autoescape = NullOrUndefined (Just true) }
     safeOutput <- renderString safeNunjucks string context
 
-    dangerNunjucks <- configure "" $ defaultConfiguration' $ _ { autoescape = NullOrUndefined (Just false) }
+    dangerNunjucks <- configure $ defaultConfiguration' $ _ { autoescape = NullOrUndefined (Just false) }
     dangerOutput <- renderString dangerNunjucks string context
 
     if safeOutput == "Hello &quot;James&quot;" && dangerOutput == "Hello \"James\""
