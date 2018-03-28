@@ -1,0 +1,47 @@
+box: node:8.9.4
+build:
+  steps:
+    - add-ssh-key:
+        keyname: GITHUB_SSH
+        host: github.com
+    - add-to-known_hosts:
+        hostname: github.com
+        fingerprint: 16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48
+
+    - script:
+        name: pre-build
+        code: |
+          echo Installing haskell...
+          apt-get update
+          apt-get install -y libgmp3-dev
+          wget -qO- https://get.haskellstack.org/ | sh
+
+          echo Installing purescript...
+          echo '{ "allow_root": true }' > /root/.bowerrc
+          npm install --global --unsafe-perm=true bower purescript pulp
+
+          echo Configurring git...
+          git config --global user.email "$GITHUB_SSH_USER_NAME"
+          git config --global user.name "$GITHUB_SSH_USER_EMAIL"
+
+    - script:
+        name: build
+        code: |
+          echo Building project...
+          make clean init build
+
+    - script:
+        name: test
+        code: |
+          echo Testing project...
+          make test
+
+    - script:
+        name: deploy
+        code: |
+          if [ "$WERCKER_GIT_BRANCH" == "master" ]; then
+            echo Deploying project...
+            make release
+          else
+            echo Branch $WERCKER_GIT_BRANCH, nothing to do
+          fi
