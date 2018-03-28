@@ -15,3 +15,11 @@ exports.renderImpl = function(obj) {
         };
     };
 };
+
+exports.configureImpl = function(path) {
+    return function(opts) {
+        return function () {
+            return nunjucks.configure(path, opts);
+        };
+    };
+};
