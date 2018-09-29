@@ -9,8 +9,8 @@ clean:
 	rm -fr bower_components node_modules output
 
 init:
-	npm update
-	bower update
+	npm ci
+	bower install
 
 build:
 	pulp build
